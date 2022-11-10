@@ -349,7 +349,8 @@ class Board(object):
         n_moves = 1
 
         while True:
-            stdscr.clear()
+            if(stdscr!=None):
+                stdscr.clear()
             legal_player_moves = self.get_legal_moves()
             game_copy = self.copy()
 
@@ -382,5 +383,6 @@ class Board(object):
 
             self.apply_move(curr_move)
             n_moves += 1
-            stdscr.refresh()
-            time.sleep(1)
+            if stdscr!=None:
+                stdscr.refresh()
+                time.sleep(1)

@@ -92,7 +92,10 @@ def main(stdscr):
 
     begin_x = 3; begin_y = 3
     height = 23; width = 40
-    win = curses.newwin(height, width, begin_y, begin_x)
+    try:
+        win = curses.newwin(height, width, begin_y, begin_x)
+    except curses.error:
+        raise RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
 
     piece1 = choose_piece(stdscr, win, 1)
     piece2 = choose_piece(stdscr, win, 2)
@@ -105,6 +108,21 @@ def main(stdscr):
     player2 = players_dict[p2]
     win.clear()
     stdscr.clear()
+    
+    stdscr.addstr(2, 55, "Chess Piece Wars", CYAN_TEXT | curses.A_BOLD)
+
+    stdscr.addstr(5, 5, f"Player 1 : {p1} ({piece1})")
+    stdscr.addstr(6, 5, f"Player 2 : {p2} ({piece2})")
+    stdscr.refresh()
+    time.sleep(1)
+
+    begin_x = 10; begin_y = 10
+    height = 40; width = 60
+    try:
+        win2 = curses.newwin(height, width, begin_y, begin_x)
+    except curses.error:
+        RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
+
 
     if (p1 == 'Human' or p2 == 'Human'):
         stdscr.addstr(2, 55, "Chess Piece Wars", CYAN_TEXT | curses.A_BOLD)
