@@ -186,24 +186,18 @@ if flag:
     browser.get('https://cyantarantula.github.io/StaleMate/')
     wait = WebDriverWait(browser, 600)
 
-    image_number = 11266
-    end_number = 12515
+    player1_field = wait.until((ec.presence_of_element_located((By.CLASS_NAME, 'file-field-hidden'))))
+    upload_btn.send_keys("D:/temp2/temp2/face/" + str(image_number) + ".png")
 
-    while image_number <= end_number:
-        browser.get('https://cyantarantula.github.io/StaleMate/')
+    try: 
+        print("here1")
+        toon_type_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "collage__tab_tab210622"))))
+        toon_type_btn.click()
 
-        upload_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, 'file-field-hidden'))))
-        upload_btn.send_keys("D:/temp2/temp2/face/" + str(image_number) + ".png")
+        print("here2")
 
-        try: 
-            print("here1")
-            toon_type_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "collage__tab_tab210622"))))
-            toon_type_btn.click()
-
-            print("here2")
-
-            download_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "btn-upload-foto-result"))))
-            download_btn.click()
-            time.sleep(7)
-        except:
-            pass
+        download_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "btn-upload-foto-result"))))
+        download_btn.click()
+        time.sleep(7)
+    except:
+        pass
