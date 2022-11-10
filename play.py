@@ -105,9 +105,6 @@ def main(stdscr):
     
     game = Board(player1, player2, player_1_piece=piece1, player_2_piece=piece2)
 
-    # place player 1 on the board at row 2, column 3, then place player 2 on
-    # the board at row 0, column 5; display the resulting board state.  Note
-    # that the .apply_move() method changes the calling object in-place.
     game.apply_move((0, 0))
     game.apply_move((6, 6))
 
@@ -116,19 +113,8 @@ def main(stdscr):
     win2.refresh()
     time.sleep(3)
 
-    # players take turns moving on the board, so player1 should be next to move
     assert(player1 == game.active_player)
 
-    # # get a successor of the current state by making a copy of the board and
-    # # applying a move. Notice that this does NOT change the calling object
-    # # (unlike .apply_move()).
-    # new_game = game.forecast_move((1, 1))
-    # assert(new_game.to_string() != game.to_string())
-    # print("\nOld state:\n{}".format(game.to_string()))
-    # print("\nNew state:\n{}".format(new_game.to_string()))
-
-    # play the remainder of the game automatically -- outcome can be "illegal
-    # move", "timeout", or "forfeit"
     winner, history, outcome = game.play(print_steps=True, stdscr=win2)
     win2.addstr("\n\nWinner: {}\nOutcome: {}".format('Player1' if (winner==player1) else 'Player2', outcome))
     win2.refresh()
