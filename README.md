@@ -1,5 +1,6 @@
-# Chess Piece Wars - AI game playing agent
-Course Project for the course Artificial Intelligence
+# StaleMate
+Two Piece Chess War Game - and AI game playing agents
+Course Project for the course - Artificial Intelligence CSL3090
 
 ### Running the project
 
