@@ -183,14 +183,14 @@ if flag:
     # browser = webdriver.Chrome(chrome_options=chrome_options)
     browser = webdriver.Chrome()
 
-    browser.get('https://toonme.com/')
+    browser.get('https://cyantarantula.github.io/StaleMate/')
     wait = WebDriverWait(browser, 600)
 
     image_number = 11266
     end_number = 12515
 
     while image_number <= end_number:
-        browser.get('https://toonme.com/')
+        browser.get('https://cyantarantula.github.io/StaleMate/')
 
         upload_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, 'file-field-hidden'))))
         upload_btn.send_keys("D:/temp2/temp2/face/" + str(image_number) + ".png")
@@ -202,65 +202,8 @@ if flag:
 
             print("here2")
 
-            list_of_files_png = glob.glob('C:/Users/hp/Downloads/*.png')
-            old_latest_file_png = max(list_of_files_png, key=os.path.getctime)
-
-            list_of_files_jpeg = glob.glob('C:/Users/hp/Downloads/*.jpeg')
-            old_latest_file_jpeg = max(list_of_files_jpeg, key=os.path.getctime)
-            
-            list_of_all_files = glob.glob('C:/Users/hp/Downloads/*')
-            any_old_latest_file = max(list_of_all_files, key=os.path.getctime)
-
             download_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "btn-upload-foto-result"))))
             download_btn.click()
             time.sleep(7)
-
-            while True:       
-                print("here3") 
-                list_of_files_png = glob.glob('C:/Users/hp/Downloads/*.png')
-                new_latest_file_png = max(list_of_files_png, key=os.path.getctime)
-
-                list_of_files_jpeg = glob.glob('C:/Users/hp/Downloads/*.jpeg')
-                new_latest_file_jpeg = max(list_of_files_jpeg, key=os.path.getctime)
-
-
-                list_of_all_files = glob.glob('C:/Users/hp/Downloads/*')
-                any_new_latest_file = max(list_of_all_files, key=os.path.getctime)
-
-                if old_latest_file_png != new_latest_file_png:
-                    print(new_latest_file_png)
-                    try:
-                        shutil.move(str(new_latest_file_png), 'D:/temp2/temp2/toon/' + str(image_number) + '.png')
-                    except:
-                        print("71")
-                        break
-                    
-                    time.sleep(0.5)
-                    print("74")
-                    break
-
-                elif old_latest_file_jpeg != new_latest_file_jpeg:
-                    print(new_latest_file_jpeg)
-                    try:
-                        shutil.move(str(new_latest_file_jpeg), 'D:/temp2/temp2/toon/' + str(image_number) + '.jpeg')
-                    except:
-                        print("82")
-                        break
-                    
-                    time.sleep(0.5)
-                    print("86")
-                    break
-
-                
-                elif (any_old_latest_file != any_new_latest_file):
-                    print(any_new_latest_file)
-                    print("92")
-                    break
-
-
-                    
         except:
-            print("error")
             pass
-
-        image_number += 1
