@@ -2,7 +2,7 @@ from chesswar import Board
 from player_models import *
 from score_heuristics import *
 
-# create an isolation board (by default 7x7)
+# create an chesswar board (by default 7x7)
 player1 = AlphaBetaPlayer()
 player2 = AlphaBetaPlayer()
 game = Board(player1, player2, player_1_piece='queen', player_2_piece='queen')

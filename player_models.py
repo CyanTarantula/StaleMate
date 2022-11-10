@@ -5,11 +5,9 @@ class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
     pass
 
-class IsolationPlayer:
+class ChessWarPlayer:
     """Base class for minimax and alphabeta agents -- this class is never
     constructed or tested directly.
-
-    ********************  DO NOT MODIFY THIS CLASS  ********************
 
     Parameters
     ----------
@@ -27,9 +25,10 @@ class IsolationPlayer:
         positive value large enough to allow the function to return before the
         timer expires.
     """
-    def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
+    def __init__(self, search_depth=3, score_fn=weighted_om_score, score_heuristic_weight=None, timeout=10.):
         self.search_depth = search_depth
         self.score = score_fn
+        self.score_weight = score_heuristic_weight
         self.time_left = None
         self.TIMER_THRESHOLD = timeout
 
@@ -41,8 +40,8 @@ class RandomPlayer():
 
         Parameters
         ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
+        game : `chesswar.Board`
+            An instance of `chesswar.Board` encoding the current state of the
             game (e.g., player locations and blocked cells).
 
         time_left : callable
@@ -61,7 +60,7 @@ class RandomPlayer():
             return (-1, -1)
         return legal_moves[randint(0, len(legal_moves) - 1)]
 
-class GreedyPlayer(IsolationPlayer):
+class GreedyPlayer(ChessWarPlayer):
     """Player that chooses next move to maximize heuristic score. This is
     equivalent to a minimax search agent with a search depth of one.
     """
@@ -72,8 +71,8 @@ class GreedyPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
+        game : `chesswar.Board`
+            An instance of `chesswar.Board` encoding the current state of the
             game (e.g., player locations and blocked cells).
 
         time_left : callable
@@ -93,11 +92,11 @@ class GreedyPlayer(IsolationPlayer):
         legal_moves = game.get_legal_moves()
         if not legal_moves:
             return (-1, -1)
-        _, move = max([(self.score(game.forecast_move(m), self), m) for m in legal_moves])
+        _, move = max([(self.score(game.forecast_move(m), self, weight=self.score_weight), m) for m in legal_moves])
         
         return move
 
-class HumanPlayer(IsolationPlayer):
+class HumanPlayer(ChessWarPlayer):
     """Player that chooses a move according to user's input."""
 
     def get_move(self, game, time_left):
@@ -112,8 +111,8 @@ class HumanPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
+        game : `chesswar.Board`
+            An instance of `chesswar.Board` encoding the current state of the
             game (e.g., player locations and blocked cells).
 
         time_left : callable
@@ -153,7 +152,7 @@ class HumanPlayer(IsolationPlayer):
 
         return legal_moves[index]
 
-class MinimaxPlayer(IsolationPlayer):
+class MinimaxPlayer(ChessWarPlayer):
     """Game-playing agent that chooses a move using Depth-limited Minimax Search.
     """
 
@@ -163,8 +162,8 @@ class MinimaxPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
+        game : `chesswar.Board`
+            An instance of `chesswar.Board` encoding the current state of the
             game (e.g., player locations and blocked cells).
 
         time_left : callable
@@ -200,8 +199,8 @@ class MinimaxPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : isolation.Board
-            An instance of the Isolation game `Board` class representing the
+        game : chesswar.Board
+            An instance of the chesswar game `Board` class representing the
             current game state
 
         depth : int
@@ -247,7 +246,7 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         if self._terminal_state(game, depth):
-            return self.score(game, self)
+            return self.score(game, self, weight=self.score_weight)
 
         score = float("inf")
         for move in game.get_legal_moves():
@@ -261,7 +260,7 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         if self._terminal_state(game, depth):
-            return self.score(game, self)
+            return self.score(game, self, weight=self.score_weight)
 
         score = float("-inf")
         for move in game.get_legal_moves():
@@ -270,7 +269,7 @@ class MinimaxPlayer(IsolationPlayer):
 
         return score
 
-class AlphaBetaPlayer(IsolationPlayer):
+class AlphaBetaPlayer(ChessWarPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
     search with alpha-beta pruning.
     """
@@ -281,8 +280,8 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
+        game : `chesswar.Board`
+            An instance of `chesswar.Board` encoding the current state of the
             game (e.g., player locations and blocked cells).
 
         time_left : callable
@@ -322,8 +321,8 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         Parameters
         ----------
-        game : isolation.Board
-            An instance of the Isolation game `Board` class representing the
+        game : chesswar.Board
+            An instance of the chesswar game `Board` class representing the
             current game state
 
         depth : int
@@ -382,7 +381,7 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         if self._terminal_state(game, depth):
-            return self.score(game, self)
+            return self.score(game, self, weight=self.score_weight)
 
         score = float("inf")
         for move in game.get_legal_moves():
@@ -402,7 +401,7 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         if self._terminal_state(game, depth):
-            return self.score(game, self)
+            return self.score(game, self, weight=self.score_weight)
 
         score = float("-inf")
         for move in game.get_legal_moves(self):
