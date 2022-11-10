@@ -1,6 +1,8 @@
 from chesswar import Board
 from player_models import *
 from score_heuristics import *
+import curses
+from curses import wrapper
 
 # create an chesswar board (by default 7x7)
 player1 = AlphaBetaPlayer()

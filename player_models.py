@@ -1,5 +1,6 @@
 from random import randint
 from score_heuristics import *
+import curses
 
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
@@ -35,7 +36,7 @@ class ChessWarPlayer:
 class RandomPlayer():
     """Player that chooses a move randomly."""
 
-    def get_move(self, game, time_left):
+    def get_move(self, game, time_left, **kwargs):
         """Randomly select a move from the available legal moves.
 
         Parameters
@@ -65,7 +66,7 @@ class GreedyPlayer(ChessWarPlayer):
     equivalent to a minimax search agent with a search depth of one.
     """
 
-    def get_move(self, game, time_left):
+    def get_move(self, game, time_left, **kwargs):
         """Select the move from the available legal moves with the highest
         heuristic score.
 
@@ -99,7 +100,7 @@ class GreedyPlayer(ChessWarPlayer):
 class HumanPlayer(ChessWarPlayer):
     """Player that chooses a move according to user's input."""
 
-    def get_move(self, game, time_left):
+    def get_move(self, game, time_left, **kwargs):
         """
         Select a move from the available legal moves based on user input at the
         terminal.
@@ -128,27 +129,59 @@ class HumanPlayer(ChessWarPlayer):
             legal moves
         """
         self.time_left = time_left
+        print_steps = False
+        stdscr = None
+        if('print_steps' in kwargs and kwargs['print_steps']!=None):
+            print_steps = kwargs['print_steps']
+            if('stdscr' in kwargs and kwargs['stdscr']!=None):
+                stdscr = kwargs['stdscr']
 
         legal_moves = game.get_legal_moves()
         if not legal_moves:
             return (-1, -1)
 
-        print(game.to_string()) #display the board for the human player
-        print('Valid Moves : ')
-        print(('\t'.join(['[%d] %s' % (i, str(move)) for i, move in enumerate(legal_moves)])))
+        if(print_steps):
+            stdscr.addstr("\nValid moves:    "+('      '.join(['%d{%s}' % (i, str(move)) for i, move in enumerate(sorted(legal_moves))])))
+        else:
+            print(game.to_string()) #display the board for the human player
+            print('Valid Moves : ')
+            print(('      '.join(['%d{%s}' % (i, str(move)) for i, move in enumerate(legal_moves)])))
 
         valid_choice = False
         while not valid_choice:
             try:
-                print('\nTime Left : {}'.format(time_left()))
-                index = int(input('Select move index :'))
+                if(print_steps):
+                    stdscr.addstr('\n\ntime_left: {}s'.format(str(time_left()/1000)))
+                    stdscr.addstr("\nSelect Move index: ")
+                    val = ""
+                    while True:
+                        key = chr(stdscr.getch())
+                        if(key == '\n'):
+                            break
+                        val += key
+                        stdscr.addstr(chr)
+                        stdscr.refresh()
+                    index = int(val)
+                else:
+                    print('\nTime Left : {}'.format(time_left()))
+                    index = int(input('Select move index :'))
+                
                 valid_choice = 0 <= index < len(legal_moves)
 
                 if not valid_choice:
-                    print('Illegal move! Try again.')
+                    if(print_steps):
+                        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+                        stdscr.addstr("\nIllegal move! Try again.", curses.color_pair(1))
+                    else:
+                        print('Illegal move! Try again.')
 
             except ValueError:
-                print('Invalid index! Try again.')
+                if(print_steps):
+                        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+                        stdscr.addstr("\nInvalid index! Try again.", curses.color_pair(1))
+                else:
+                    print('Invalid index! Try again.')
+            stdscr.refresh()
 
         return legal_moves[index]
 
@@ -156,7 +189,7 @@ class MinimaxPlayer(ChessWarPlayer):
     """Game-playing agent that chooses a move using Depth-limited Minimax Search.
     """
 
-    def get_move(self, game, time_left):
+    def get_move(self, game, time_left, **kwargs):
         """Search for the best move from the available legal moves and return a
         result before the time limit expires.
 
@@ -274,7 +307,7 @@ class AlphaBetaPlayer(ChessWarPlayer):
     search with alpha-beta pruning.
     """
 
-    def get_move(self, game, time_left):
+    def get_move(self, game, time_left, **kwargs):
         """Search for the best move from the available legal moves and return a
         result before the time limit expires.
 

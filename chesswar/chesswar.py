@@ -1,5 +1,6 @@
 import random
 import timeit
+import time
 from copy import copy
 
 
@@ -287,11 +288,6 @@ class Board(object):
         
         return directions
 
-
-    def print_board(self):
-        """DEPRECATED - use Board.to_string()"""
-        return self.to_string()
-
     def to_string(self, symbols=['1', '2']):
         """Generate a string representation of the current game state, marking
         the location of each player and indicating which cells have been
@@ -327,7 +323,7 @@ class Board(object):
 
         return out
 
-    def play(self, time_limit=3600000, print_steps = False):
+    def play(self, time_limit=3600000, print_steps = False, stdscr=None):
         """Execute a match between the players by alternately soliciting them
         to select a move and applying it in the game.
 
@@ -353,6 +349,7 @@ class Board(object):
         n_moves = 1
 
         while True:
+            stdscr.clear()
             legal_player_moves = self.get_legal_moves()
             game_copy = self.copy()
 
@@ -360,9 +357,12 @@ class Board(object):
             time_left = lambda : time_limit - (time_millis() - move_start)
 
             if(print_steps):
-                print('time left : {}  \n{}'.format(time_left(), self.to_string()))
+                if(stdscr==None):
+                    print('time left : {:.2f}s  \n{}'.format(time_left()/1000, self.to_string()))
+                else:
+                    stdscr.addstr('time left : {:2f}  \n\n{}'.format(time_left()/1000, self.to_string()))
 
-            curr_move = self._active_player.get_move(game_copy, time_left)
+            curr_move = self._active_player.get_move(game_copy, time_left, print_steps=print_steps, stdscr=stdscr)
             move_end = time_left()
 
             if curr_move is None:
@@ -373,8 +373,8 @@ class Board(object):
 
             if curr_move not in legal_player_moves:
                 if len(legal_player_moves) > 0:
-                    print(legal_player_moves)
-                    print(curr_move)
+                    # print(legal_player_moves)
+                    # print(curr_move)
                     return self._inactive_player, move_history, "forfeit"
                 return self._inactive_player, move_history, "Out of moves"
 
@@ -382,3 +382,5 @@ class Board(object):
 
             self.apply_move(curr_move)
             n_moves += 1
+            stdscr.refresh()
+            time.sleep(1)
