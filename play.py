@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 import os
 # import shutil
 
-p1, p2, piece1, piece2 = 'AI AlphaBeta', 'AI Minimax', 'bishop', 'knight'
+p1, p2, piece1, piece2, history = 'AI AlphaBeta', 'AI Minimax', 'bishop', 'knight', ""
 flag = False
 
 def choose_piece(stdscr, win, n):
@@ -80,7 +80,7 @@ def choose_player(stdscr, win, n):
     return pl1
 
 def main(stdscr):
-    global p1, p2, piece1, piece2, flag
+    global p1, p2, piece1, piece2, history, flag
     stdscr.clear()
 
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
@@ -186,18 +186,29 @@ if flag:
     browser.get('https://cyantarantula.github.io/StaleMate/')
     wait = WebDriverWait(browser, 600)
 
-    player1_field = wait.until((ec.presence_of_element_located((By.CLASS_NAME, 'file-field-hidden'))))
-    upload_btn.send_keys("D:/temp2/temp2/face/" + str(image_number) + ".png")
+    player1_field = wait.until((ec.presence_of_element_located((By.ID, 'input_player1'))))
+    player1_field.send_keys(p1 + " (" + piece1 + ")")
+    
+    player2_field = wait.until((ec.presence_of_element_located((By.ID, 'input_player2'))))
+    player2_field.send_keys(p2 + " (" + piece2 + ")")
 
-    try: 
-        print("here1")
-        toon_type_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "collage__tab_tab210622"))))
-        toon_type_btn.click()
+    history_field = wait.until((ec.presence_of_element_located((By.ID, 'move_history'))))
+    history_field.send_keys(history)
 
-        print("here2")
+    run_game_btn = wait.until((ec.presence_of_element_located((By.ID, 'runGame'))))
+    run_game_btn.click()
 
-        download_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "btn-upload-foto-result"))))
-        download_btn.click()
-        time.sleep(7)
-    except:
-        pass
+    time.sleep(100)
+
+    # try: 
+    #     print("here1")
+    #     toon_type_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "collage__tab_tab210622"))))
+    #     toon_type_btn.click()
+
+    #     print("here2")
+
+    #     download_btn = wait.until((ec.presence_of_element_located((By.CLASS_NAME, "btn-upload-foto-result"))))
+    #     download_btn.click()
+    #     time.sleep(7)
+    # except:
+    #     pass
