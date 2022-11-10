@@ -78,7 +78,10 @@ def main(stdscr):
 
     begin_x = 3; begin_y = 3
     height = 23; width = 40
-    win = curses.newwin(height, width, begin_y, begin_x)
+    try:
+        win = curses.newwin(height, width, begin_y, begin_x)
+    except curses.error:
+        raise RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
 
     piece1 = choose_piece(stdscr, win, 1)
     piece2 = choose_piece(stdscr, win, 2)
@@ -100,7 +103,10 @@ def main(stdscr):
 
     begin_x = 10; begin_y = 10
     height = 40; width = 60
-    win2 = curses.newwin(height, width, begin_y, begin_x)
+    try:
+        win2 = curses.newwin(height, width, begin_y, begin_x)
+    except curses.error:
+        RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
 
     
     game = Board(player1, player2, player_1_piece=piece1, player_2_piece=piece2)
