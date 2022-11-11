@@ -141,7 +141,7 @@ class HumanPlayer(ChessWarPlayer):
             return (-1, -1)
 
         if(print_steps):
-            stdscr.addstr("\nValid moves:    "+('      '.join(['%d{%s}' % (i, str(move)) for i, move in enumerate(sorted(legal_moves))])))
+            stdscr.addstr("\nValid moves:    "+('      '.join(['%d{%s}' % (i, str(move)) for i, move in enumerate(legal_moves)])))
         else:
             print(game.to_string()) #display the board for the human player
             print('Valid Moves : ')
@@ -159,7 +159,7 @@ class HumanPlayer(ChessWarPlayer):
                         if(key == '\n'):
                             break
                         val += key
-                        stdscr.addstr(chr)
+                        stdscr.addstr(key)
                         stdscr.refresh()
                     index = int(val)
                 else:
