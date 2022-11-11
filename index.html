@@ -7,50 +7,37 @@
 	<title>Empty Board Example</title>
 
 	<link rel="stylesheet" href="css/chessboard.css" />
-	<style>
-		#display {
-			float: left;
-			margin: 50px;
-			padding: 0px 50px;
-		}
-
-		#board {
-			width: 600px;
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		#match {
-			margin-left: 20px;
-			width: 275px;
-			display: inline-block;
-			vertical-align: top;
-		}
-	</style>
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body style="font-family: monospace;">
+	<div id="title">StaleMate</div>
+	<div id="main-section">
+		<div id="left-section">
+			<div>
+				<form id="game_form">
+					Player 1 (White):<br>
+					<input id="input_player1" type="text" name="player1" placeholder="Player 1">
+					<br>
+					Player 2 (Black):<br>
+					<input id="input_player2" type="text" name="player2" placeholder="Player 2">
+					<br>
+					Move History:<br>
+					<textarea id="move_history" rows="3" cols="120" name="moves" placeholder="[[0, 0], [3, 2], ...]"></textarea>
+					<br>
+					<input type="submit" id="runGame" value="Run Game">
+				</form>
+			</div>
 
-	<div>
-		<form id="game_form">
-			Player 1:<br>
-			<input id="input_player1" type="text" name="player1" placeholder="Player 1">
-			<br>
-			Player 2:<br>
-			<input id="input_player2" type="text" name="player2" placeholder="Player 2">
-			<br>
-			Move History:<br>
-			<textarea id="move_history" rows="3" cols="120" name="moves" placeholder="[[0, 0], [3, 2], ...]"></textarea>
-			<br>
-			<input type="submit" id="runGame" value="Run Game">
-		</form>
-	</div>
-
-	<div id="display">
-		<div id="match">
-			<table id="moves" style="text-align: center;"></table>
+			<div id="display">
+				<div id="match">
+					<table id="moves" style="text-align: center;"></table>
+				</div>
+			</div>
 		</div>
-		<div id="board"></div>
+
+		<div id="board">
+		</div>
 	</div>
 
 	<script src="js/json3.min.js"></script>

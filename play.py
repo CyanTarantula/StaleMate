@@ -193,12 +193,13 @@ if flag:
     player2_field.send_keys(p2 + " (" + piece2 + ")")
 
     history_field = wait.until((ec.presence_of_element_located((By.ID, 'move_history'))))
-    history_field.send_keys(history)
+    history_field.send_keys(str(history))
 
     run_game_btn = wait.until((ec.presence_of_element_located((By.ID, 'runGame'))))
     run_game_btn.click()
 
-    time.sleep(100)
+    wait.until((ec.presence_of_element_located((By.CLASS_NAME, 'win'))))
+    time.sleep(10)
 
     # try: 
     #     print("here1")
