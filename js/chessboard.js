@@ -78,6 +78,7 @@ function validPositionObject(pos) {
 
 // convert FEN piece code to bP, wK, etc
 function fenToPieceCode(piece) {
+  console.log("hmm", piece);
   // black piece
   if (piece.toLowerCase() === piece) {
     return 'b' + piece.toUpperCase();

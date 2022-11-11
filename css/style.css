@@ -1,0 +1,87 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background: rgb(179,111,220);
+    background: radial-gradient(circle, rgba(179,111,220,1) 0%, rgba(148,187,233,1) 100%);
+}
+
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    width: 100vw;
+    font-size: 5vh;
+    background: rgb(179,111,220);
+    background: linear-gradient(0deg, rgba(179,111,220,1) 30%, rgba(92,50,101,1) 100%);
+}
+
+#main-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 90vh;
+    width: 100vw;
+}
+
+#left-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 40vw;
+}
+
+#game_form {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    font-size: 2vmin;
+    font-weight: 600;
+}
+
+#input_player1, #input_player2, #move_history {
+    color: black;
+    background-color: rgb(236, 236, 236);
+    border: 4px solid #94bbe9;
+    border-radius: 5px;
+    padding-top: 10px;
+}
+
+#move_history {
+    resize: none;
+}
+
+#input_player1:focus, #input_player2:focus, #move_history:focus {
+    outline: 2px solid #a2ceff;
+}
+
+#runGame {
+    width: min-content;
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    color: black;
+    background-color: #eeaeca;
+}
+
+#display {
+    
+}
+
+#board {
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#match {
+    /* margin-left: 20px;
+    width: 275px; */
+    display: inline-block;
+    vertical-align: top;
+}
