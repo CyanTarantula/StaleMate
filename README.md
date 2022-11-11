@@ -20,6 +20,9 @@ python play.py
 ### Team
 
 The project was made by :
+
 Soumik Roy
+
 Stuti Aswani
+
 Yash Bhargava
