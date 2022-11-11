@@ -323,7 +323,7 @@ class Board(object):
 
         return out
 
-    def play(self, time_limit=3600000, print_steps = False, stdscr=None):
+    def play(self, time_limit=3600000, print_steps = False, terminal_window = None):
         """Execute a match between the players by alternately soliciting them
         to select a move and applying it in the game.
 
@@ -347,10 +347,13 @@ class Board(object):
 
         time_millis = lambda: 1000 * timeit.default_timer()
         n_moves = 1
+    
+        if(terminal_window!=None):
+            print_steps = True
 
         while True:
-            if(stdscr!=None):
-                stdscr.clear()
+            if(print_steps==True and terminal_window != None):
+                terminal_window.clear()
             legal_player_moves = self.get_legal_moves()
             game_copy = self.copy()
 
@@ -358,12 +361,12 @@ class Board(object):
             time_left = lambda : time_limit - (time_millis() - move_start)
 
             if(print_steps):
-                if(stdscr==None):
+                if(terminal_window==None):
                     print('time left : {:.2f}s  \n{}'.format(time_left()/1000, self.to_string()))
                 else:
-                    stdscr.addstr('time left : {:2f}  \n\n{}'.format(time_left()/1000, self.to_string()))
+                    terminal_window.addstr('time left : {:2f}  \n\n{}'.format(time_left()/1000, self.to_string()))
 
-            curr_move = self._active_player.get_move(game_copy, time_left, print_steps=print_steps, stdscr=stdscr)
+            curr_move = self._active_player.get_move(game_copy, time_left, print_steps=print_steps, stdscr=terminal_window)
             move_end = time_left()
 
             if curr_move is None:
@@ -383,6 +386,6 @@ class Board(object):
 
             self.apply_move(curr_move)
             n_moves += 1
-            if stdscr!=None:
-                stdscr.refresh()
+            if (print_steps==True and terminal_window != None):
+                terminal_window.refresh()
                 time.sleep(1)

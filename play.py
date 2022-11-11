@@ -10,10 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-# import time
-# import glob
 import os
-# import shutil
 
 p1, p2, piece1, piece2 = 'AI AlphaBeta', 'AI Minimax', 'bishop', 'knight'
 flag = False
@@ -94,7 +91,7 @@ def main(stdscr):
     height = 23; width = 40
     try:
         win = curses.newwin(height, width, begin_y, begin_x)
-    except curses.error:
+    except curses.error or win==None:
         raise RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
 
     piece1 = choose_piece(stdscr, win, 1)
@@ -108,21 +105,6 @@ def main(stdscr):
     player2 = players_dict[p2]
     win.clear()
     stdscr.clear()
-    
-    stdscr.addstr(2, 55, "Chess Piece Wars", CYAN_TEXT | curses.A_BOLD)
-
-    stdscr.addstr(5, 5, f"Player 1 : {p1} ({piece1})")
-    stdscr.addstr(6, 5, f"Player 2 : {p2} ({piece2})")
-    stdscr.refresh()
-    time.sleep(1)
-
-    begin_x = 10; begin_y = 10
-    height = 40; width = 60
-    try:
-        win2 = curses.newwin(height, width, begin_y, begin_x)
-    except curses.error:
-        RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
-
 
     if (p1 == 'Human' or p2 == 'Human'):
         stdscr.addstr(2, 55, "Chess Piece Wars", CYAN_TEXT | curses.A_BOLD)
@@ -134,7 +116,10 @@ def main(stdscr):
 
         begin_x = 10; begin_y = 10
         height = 40; width = 60
-        win2 = curses.newwin(height, width, begin_y, begin_x)
+        try:
+            win2 = curses.newwin(height, width, begin_y, begin_x)
+        except curses.error:
+            raise RuntimeError("Inadequate terminal size, please resize to atleast 80x80 (Preferably open a fullscreen terminal) !")
 
         
         game = Board(player1, player2, player_1_piece=piece1, player_2_piece=piece2)
@@ -149,7 +134,7 @@ def main(stdscr):
 
         assert(player1 == game.active_player)
 
-        winner, history, outcome = game.play(print_steps=True, stdscr=win2)
+        winner, history, outcome = game.play(print_steps=True, terminal_window=win2)
         win2.addstr("\n\nWinner: {}\nOutcome: {}".format('Player1' if (winner==player1) else 'Player2', outcome))
         win2.refresh()
 
