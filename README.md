@@ -14,20 +14,26 @@ The game will then end when there are no possible moves left for a player to pla
 
 ## Running the project
 
-First install all dependencies using the following command.
-```
-pip install -r requirements.txt
+- First install all dependencies using the following command.
+    ```
+    pip install -r requirements.txt
+    ```
+    Alternatively, if this does now work then you can try 
+    ```
+    python -m pip install -r requirements.txt
+    ```
 
-// if this does now work then you can try ***python -m pip install -r requirements.txt***
-```
+- Now to play the game use the command:
+    ```
+    python play.py
+    ```
+- After the match ends, a webpage will automatically be opened in your default browser, and a visual replay the whole game can be viewed there.
 
-Now to play the game use the command:
-```
-python play.py
-```
 ### Simulations
 
-### Team
+You can open and run the jupyter notebook attached - ```simulations.ipynb``` to run the simulations and checkout the visualised results.
+
+## Team
 
 The project was made by :
 
