@@ -33,6 +33,11 @@ The game will then end when there are no possible moves left for a player to pla
 
 You can open and run the jupyter notebook attached - ```simulations.ipynb``` to run the simulations and checkout the visualised results.
 
+### Demo
+
+Watch a demo for the project by following the link below<br>
+https://drive.google.com/file/d/1s4whgw_BSRb7UeeBHP8c-kvNPnWU1Tgl/view
+
 ## Team
 
 The project was made by :
